@@ -2,6 +2,7 @@ package com.example.fourp;
 
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -13,62 +14,47 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 public class MainActivity extends AppCompatActivity {
-    int count1=0,count2=0,count3=0,count4=0;
-    String num2,num1,sum,min,mult,d;
-    int number1,number2;
+    private EditText etNum1,etNum2;
+    private TextView res;
+    private Button plus,min,mult,div;
 
+    @SuppressWarnings("MissingInFlatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
+        etNum1 = findViewById(R.id.etNum1);
+        etNum2 = findViewById(R.id.etNum2);
+        res=findViewById(R.id.res);
+        plus=findViewById(R.id.plus);
+        plus.setOnClickListener((View.OnClickListener) this);
+        min=findViewById(R.id.min);
+        min.setOnClickListener((View.OnClickListener) this);
+        mult=findViewById(R.id.x);
+        mult.setOnClickListener((View.OnClickListener) this);
+        div=findViewById(R.id.div);
+        div.setOnClickListener((View.OnClickListener) this);
+
     }
-    public void countmin(View view) {
-        count2++;
-    }
-    public void countplus(View view) {
-        count1++;
-    }
-    public void mult(View view) {
-        count3++;
-    }
-    public void d(View view) {
-        count4++;
-    }
+
 
     public void res(View view) {
-        EditText num1Text = findViewById(R.id.num1);
-
-        num1 = num1Text.getText().toString();
-        num2 = ((EditText)findViewById(R.id.num2)).getText().toString();
-        TextView showDetalis = (TextView) (findViewById(R.id.det));
-        number1=Integer.parseInt(num1);
-        number2=Integer.parseInt(num2);
-        if(count1!=0){
-            sum= (String) ( number1 + number2);
-            showDetalis.setText(number1+number2);
-            count1=0;
+        int num,num2;
+        if (!(etNum1.getText().toString().isEmpty()||etNum2.getText().toString().isEmpty())){
+            num=Integer.parseInt(etNum1.getText().toString());
+            num2=Integer.parseInt(etNum2.getText().toString());
+            etNum1.setText("");
+            etNum2.setText("");
+            if (view.getId()==R.id.plus)
+                res.setText(String.valueOf(num+num2));
+            if (view.getId()==R.id.min)
+                res.setText(String.valueOf(num-num2));
+            if (view.getId()==R.id.x)
+                res.setText(String.valueOf(num*num2));
+            if (view.getId()==R.id.div&&num2!=0)
+                res.setText(String.valueOf(num/num2));
         }
-        if(count2!=0){
-            min=(String)(number1-number2);
-            showDetalis.setText(min);
-            count1=0;
-        }
-        if(count3!=0){
-            mult=(String)(number1*number2);
-            showDetalis.setText(mult);
-            count3=0;
-        }
-        if(count4!=0){
-            d=(String) (number1+number2);
-            if(number2!=0){
-                showDetalis.setText(d);
-            }
-            else {
-                Toast.makeText(this, "error", Toast.LENGTH_SHORT).show();
-            }
-            count4=0;
-        }
-
+        else
+            Toast.makeText(this, "Please insert numbers...", Toast.LENGTH_SHORT).show();
     }
 }
